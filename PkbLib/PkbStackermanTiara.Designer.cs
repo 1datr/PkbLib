@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System;
 
 namespace PkbLib
 {
@@ -80,6 +81,38 @@ namespace PkbLib
 
                     }
                 }
+            }
+        }
+
+        public override bool Kvit(object kvitparams = null)
+        {
+            /*con.ResetErrPermitFuniTrans(1);
+            con.ResetErrPermitFuniTrans(30160);*/
+            if (ErrorConnectSh)
+            {
+                this.GenError("Нет подключения к ПЛК");
+                return false;
+            }
+            con.SetDT();
+            this.reset_alarms();
+            return true;
+        }
+
+        private void reset_alarms()
+        {
+            try
+            {
+                con.SetDT();
+                // reset
+                for (ushort i = drvCon.alarmAdr/*31942*/; i <= /*31942*/drvCon.alarmAdr + drvCon.andAlarmAdr; i++)
+                    con.ResetErrPermitFuniTrans(i);
+                con.ResetErrPermitFuniTrans(F_GIVE_ME_MONEY_ADDR);
+                con.SetOtherCodeCmd((ushort)5);
+                con.SetCodeCmd((ushort)5);
+            }
+            catch (Exception e)
+            {
+                this.GenError(e.Message);
             }
         }
 

@@ -732,6 +732,7 @@ namespace PkbLib
                             break;
 
                         case "check":
+                            SM.CellCheck(cmd.param1);
                             break;
                     }
                 }

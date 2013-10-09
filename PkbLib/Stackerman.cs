@@ -307,5 +307,11 @@ namespace PkbLib
         {
             
         }
+
+        public virtual bool Kvit(object kvitparams = null)
+        {
+            
+            return true;
+        }
     }
 }

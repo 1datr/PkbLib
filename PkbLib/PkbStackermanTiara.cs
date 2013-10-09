@@ -205,6 +205,7 @@ namespace PkbLib
             try
             {
                 con.SetDT();
+                Kvit();
                 con.SetCodeCmd(107);
                 givememoney();
             }
@@ -219,6 +220,7 @@ namespace PkbLib
             try
             {
                 con.SetDT();
+                Kvit();
                 con.SetCodeCmd(104);
                 givememoney();
             }
@@ -233,6 +235,7 @@ namespace PkbLib
             try
             {
                 con.SetDT();
+                Kvit();
                 con.SetCodeCmd(101);
                 givememoney();
             }
