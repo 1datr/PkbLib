@@ -49,6 +49,34 @@ namespace PkbLib
             con.SetDT();
         }
 
+        private bool lastalarm;
+        private bool[,] oldalarms;
+        protected override void WatchState()
+        {
+            bool[,] AlarmBits = con.HoldingRegs(drvCon.alarmAdr, drvCon.alarmAdr + drvCon.andAlarmAdr);
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+
+            if (oldalarms == null)
+            { 
+                oldalarms = new bool[AlarmBits.GetLength(0),16];
+            }
+
+            bool matr_equal = true;
+            for(int j=0;j<AlarmBits.GetLength(0);j++)
+                for (int i = 0; i < AlarmBits.GetLength(1); i++)
+                {
+                    if (AlarmBits[j, i] != oldalarms[j, i]) matr_equal = false;
+                }
+            if( !matr_equal)
+            {
+                dict.Add("Alarms", this.AlarmMap());
+    
+            }
+            if (dict.Count > 0)
+                this.CallStateChange(dict);
+            oldalarms = AlarmBits;
+        }
+
         private BindingSource bs_alarm_bits;
         [DisplayName("Значения битов")]
         public BindingSource BSAlarmBits
@@ -119,6 +147,33 @@ namespace PkbLib
             return ret;
         }
 
+        public List<BitMapItem> AlarmMap()
+        {
+            List<BitMapItem> bmitems = new List<BitMapItem>();
+
+            BitMapItem bmi = new BitMapItem();
+            bool[,] AlarmBits = con.HoldingRegs(drvCon.alarmAdr, drvCon.alarmAdr + drvCon.andAlarmAdr);
+
+            string[] BitGroupName = new string[] { "AlarmWithoutAcknowledgment", "AlarmWithAcknowledgment", "AlarmWithoutAcknowledgmentDeblock" };
+            int bgindex = 0;
+            for (int z = 0; z < 9; z++)
+            {
+                if ((z > 0) & (z % 3 == 0)) bgindex++;
+                for (int bit = 0; bit < 16; bit++)
+                {
+                    bmi.bit = (ushort)bit;
+                    bmi.value = AlarmBits[z,bit];
+                    bmi.word = (ushort)(z + 1);
+                    string bitstr = BitGroupName[bgindex] + "[" + ((z % 3) + 1).ToString() + "]." + bit.ToString();
+                    AlarmBit abit = this.GetBit(bitstr);
+                    bmi.caption = abit.caption;
+                    bmitems.Add(bmi);
+                }
+
+            }
+            return bmitems;
+        }
+
         // информация о соединении и штабелере
         public override Dictionary<string, object> stateinfo()
         {
@@ -128,7 +183,7 @@ namespace PkbLib
             info.Add("Tara", con.GetPresentTaraSh());
             bool[][] Din = con.GetDIn();
             info.Add("Din", Din);
-            bool[][] AlarmBits = con.HoldingRegs(drvCon.alarmAdr, drvCon.alarmAdr + drvCon.andAlarmAdr);
+            bool[,] AlarmBits = con.HoldingRegs(drvCon.alarmAdr, drvCon.alarmAdr + drvCon.andAlarmAdr);
 
 
 
@@ -157,7 +212,7 @@ namespace PkbLib
                     for (int bit = 0; bit < 16; bit++)
                     {
                         bmi.bit = (ushort)bit;
-                        bmi.value = AlarmBits[z][bit];
+                        bmi.value = AlarmBits[z,bit];
                         bmi.word = (ushort)(z + 1);
                         string bitstr = BitGroupName[bgindex] + "[" + ((z % 3) + 1).ToString() + "]." + bit.ToString();
                         AlarmBit abit = this.GetBit(bitstr);

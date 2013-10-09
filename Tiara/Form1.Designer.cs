@@ -33,26 +33,29 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tslStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.pkbStacker1 = new PkbLib.PkbStacker();
+            this.coordsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.bdTiaraDataSet1 = new Tiara.bdTiaraDataSet1();
             this.pkbStackermanTiara1 = new PkbLib.PkbStackermanTiara(this.components);
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.dgvAlarms = new System.Windows.Forms.DataGridView();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.bdTiaraDataSet = new Tiara.bdTiaraDataSet();
             this.alarmBitsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.alarmBitsTableAdapter = new Tiara.bdTiaraDataSetTableAdapters.AlarmBitsTableAdapter();
-            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.captionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bdTiaraDataSet = new Tiara.bdTiaraDataSet();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
+            this.dgvAlarms = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button3 = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.alarmBitsTableAdapter = new Tiara.bdTiaraDataSetTableAdapters.AlarmBitsTableAdapter();
+            this.coordsTableAdapter = new Tiara.bdTiaraDataSet1TableAdapters.CoordsTableAdapter();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -60,11 +63,14 @@
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.coordsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bdTiaraDataSet1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.alarmBitsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bdTiaraDataSet)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarms)).BeginInit();
+            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bdTiaraDataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.alarmBitsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -103,6 +109,16 @@
             this.splitContainer1.SplitterDistance = 200;
             this.splitContainer1.TabIndex = 2;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(49, 183);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "KVIT";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(49, 84);
@@ -127,6 +143,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -148,17 +165,28 @@
             // pkbStacker1
             // 
             this.pkbStacker1.AutoSize = true;
+            this.pkbStacker1.BSCoordsContent = this.coordsBindingSource;
             this.pkbStacker1.FloorCount = 6;
             this.pkbStacker1.Grouping = 3;
             this.pkbStacker1.Location = new System.Drawing.Point(6, 14);
-            this.pkbStacker1.MaximumSize = new System.Drawing.Size(871, 331);
-            this.pkbStacker1.MinimumSize = new System.Drawing.Size(871, 331);
+            this.pkbStacker1.MaximumSize = new System.Drawing.Size(867, 331);
+            this.pkbStacker1.MinimumSize = new System.Drawing.Size(867, 331);
             this.pkbStacker1.Name = "pkbStacker1";
             this.pkbStacker1.Position = ((PkbLib.Point3)(resources.GetObject("pkbStacker1.Position")));
             this.pkbStacker1.RowCount = 33;
-            this.pkbStacker1.Size = new System.Drawing.Size(871, 331);
+            this.pkbStacker1.Size = new System.Drawing.Size(867, 331);
             this.pkbStacker1.Stacker_Manager = this.pkbStackermanTiara1;
             this.pkbStacker1.TabIndex = 0;
+            // 
+            // coordsBindingSource
+            // 
+            this.coordsBindingSource.DataMember = "Coords";
+            this.coordsBindingSource.DataSource = this.bdTiaraDataSet1;
+            // 
+            // bdTiaraDataSet1
+            // 
+            this.bdTiaraDataSet1.DataSetName = "bdTiaraDataSet1";
+            this.bdTiaraDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // pkbStackermanTiara1
             // 
@@ -167,10 +195,22 @@
             this.pkbStackermanTiara1.IpAdr = "192.168.1.11";
             this.pkbStackermanTiara1.MustPoint = ((PkbLib.Point3)(resources.GetObject("pkbStackermanTiara1.MustPoint")));
             this.pkbStackermanTiara1.OnError += new PkbLib.OnStackermanError(this.pkbStackermanTiara1_OnError);
+            this.pkbStackermanTiara1.OnAlarm += new PkbLib.OnStackerAlarm(this.pkbStackermanTiara1_OnAlarm);
+            this.pkbStackermanTiara1.OnStateChange += new PkbLib.OnStackerStateChange(this.pkbStackermanTiara1_OnStateChange);
+            // 
+            // alarmBitsBindingSource
+            // 
+            this.alarmBitsBindingSource.DataMember = "AlarmBits";
+            this.alarmBitsBindingSource.DataSource = this.bdTiaraDataSet;
+            // 
+            // bdTiaraDataSet
+            // 
+            this.bdTiaraDataSet.DataSetName = "bdTiaraDataSet";
+            this.bdTiaraDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.dataGridView1);
+            this.tabPage2.Controls.Add(this.button4);
             this.tabPage2.Controls.Add(this.dgvAlarms);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -179,6 +219,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "ПЛК";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(810, 24);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 1;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // dgvAlarms
             // 
@@ -190,60 +240,8 @@
             this.Column3});
             this.dgvAlarms.Location = new System.Drawing.Point(32, 22);
             this.dgvAlarms.Name = "dgvAlarms";
-            this.dgvAlarms.Size = new System.Drawing.Size(765, 195);
+            this.dgvAlarms.Size = new System.Drawing.Size(765, 305);
             this.dgvAlarms.TabIndex = 0;
-            // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idDataGridViewTextBoxColumn,
-            this.bitDataGridViewTextBoxColumn,
-            this.captionDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.alarmBitsBindingSource;
-            this.dataGridView1.Location = new System.Drawing.Point(165, 243);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView1.TabIndex = 1;
-            // 
-            // bdTiaraDataSet
-            // 
-            this.bdTiaraDataSet.DataSetName = "bdTiaraDataSet";
-            this.bdTiaraDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // alarmBitsBindingSource
-            // 
-            this.alarmBitsBindingSource.DataMember = "AlarmBits";
-            this.alarmBitsBindingSource.DataSource = this.bdTiaraDataSet;
-            // 
-            // alarmBitsTableAdapter
-            // 
-            this.alarmBitsTableAdapter.ClearBeforeFill = true;
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            this.idDataGridViewTextBoxColumn.DataPropertyName = "id";
-            this.idDataGridViewTextBoxColumn.HeaderText = "id";
-            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            this.idDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // bitDataGridViewTextBoxColumn
-            // 
-            this.bitDataGridViewTextBoxColumn.DataPropertyName = "bit";
-            this.bitDataGridViewTextBoxColumn.HeaderText = "bit";
-            this.bitDataGridViewTextBoxColumn.Name = "bitDataGridViewTextBoxColumn";
-            // 
-            // captionDataGridViewTextBoxColumn
-            // 
-            this.captionDataGridViewTextBoxColumn.DataPropertyName = "caption";
-            this.captionDataGridViewTextBoxColumn.HeaderText = "caption";
-            this.captionDataGridViewTextBoxColumn.Name = "captionDataGridViewTextBoxColumn";
             // 
             // Column1
             // 
@@ -269,15 +267,48 @@
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
             // 
-            // button3
+            // tabPage3
             // 
-            this.button3.Location = new System.Drawing.Point(49, 154);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "KVIT";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.tabPage3.Controls.Add(this.dataGridView1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(892, 356);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Координаты";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idDataGridViewTextBoxColumn});
+            this.dataGridView1.DataSource = this.coordsBindingSource;
+            this.dataGridView1.Location = new System.Drawing.Point(29, 33);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(820, 290);
+            this.dataGridView1.TabIndex = 2;
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            this.idDataGridViewTextBoxColumn.DataPropertyName = "id";
+            this.idDataGridViewTextBoxColumn.HeaderText = "id";
+            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            this.idDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // alarmBitsTableAdapter
+            // 
+            this.alarmBitsTableAdapter.ClearBeforeFill = true;
+            // 
+            // coordsTableAdapter
+            // 
+            this.coordsTableAdapter.ClearBeforeFill = true;
             // 
             // Form1
             // 
@@ -287,7 +318,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "АРМ ТИАРА";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -298,11 +329,14 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.coordsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bdTiaraDataSet1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.alarmBitsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bdTiaraDataSet)).EndInit();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarms)).EndInit();
+            this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bdTiaraDataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.alarmBitsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -322,17 +356,20 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dgvAlarms;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private bdTiaraDataSet bdTiaraDataSet;
         private System.Windows.Forms.BindingSource alarmBitsBindingSource;
         private bdTiaraDataSetTableAdapters.AlarmBitsTableAdapter alarmBitsTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bitDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn captionDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private bdTiaraDataSet1 bdTiaraDataSet1;
+        private System.Windows.Forms.BindingSource coordsBindingSource;
+        private bdTiaraDataSet1TableAdapters.CoordsTableAdapter coordsTableAdapter;
+        private System.Windows.Forms.Button button4;
     }
 }
 

@@ -868,16 +868,17 @@ namespace PkbLib
             return str;
         }
 
-        public bool[][] HoldingRegs(int byte1, int byte2, int offset = 0)
+        public bool[,] HoldingRegs(int byte1, int byte2, int offset = 0)
         {
-            bool[][] ret = new bool[byte2 - byte1 + 1][];
+            bool[,] ret = new bool[byte2 - byte1 + 1,16];
             if (offset > 0) offset = DInAdr;
             try
             {
                 ushort[] tempUSmas = master.ReadHoldingRegisters((ushort)(byte1 + offset), (ushort)(byte2 - byte1 + 1));
-                for (int i = 0; i <= (byte2 - byte1); i++)
+                for (int j = 0; j <= (byte2 - byte1); j++)
                 {
-                    ret[i] = toMasBool(tempUSmas[i]);
+                    for(int i=0; i<16; i++)
+                        ret[j,i] = toMasBool(tempUSmas[j])[i];
                 }
             }
             catch

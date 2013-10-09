@@ -81,6 +81,8 @@ namespace PkbLib
     public delegate void OnStackermanCoordChange(StcCoords Coords, StcCoords OldCoords);
     // при изменении состояния готовности
     public delegate void OnReadyStateChange(bool ready, string msg);
+    // при изменении одного из параметров состояния штабелера
+    public delegate void OnStackerStateChange(object _params);
 
     public partial class Stackerman : Component
     {
@@ -108,6 +110,7 @@ namespace PkbLib
             WatchTimer.Enabled = false;
             OnTimer();
             WatchPosition();
+            WatchState();
             WatchCmd();
             WatchTimer.Enabled = true;
         }
@@ -203,6 +206,10 @@ namespace PkbLib
         [Description("Событие, возникающее при ошибке выполнения команды штабелера")]
         public event OnStackerAlarm OnAlarm;
 
+        [DisplayName("При изменении состояния штабелера")]
+        [Description("Событие, возникающее при изменении какого-либо параметра штабелера")]
+        public event OnStackerStateChange OnStateChange;
+
         protected void ExeOnEndCmd(int cmd, object[] _params)
         {
             if (OnCommandEnd != null)
@@ -219,6 +226,22 @@ namespace PkbLib
                 if (OnCoordChange!=null) 
                     OnCoordChange(Coords, OldCoords);
             OldCoords.Copy(Coords);
+        }
+
+        protected void CallOnAlarm()
+        { 
+            if(this.OnAlarm!=null) this.OnAlarm(this.cmd,null,"");
+        }
+
+        protected void CallStateChange(Dictionary<string,object> _params =null)
+        {
+            if (this.OnStateChange != null) this.OnStateChange(_params);
+        }
+
+        
+        protected virtual void WatchState()
+        {
+            
         }
 
         protected virtual StcCoords GetCoords()
