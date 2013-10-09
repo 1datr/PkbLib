@@ -43,8 +43,9 @@
     <Reference Include="Modbus">
       <HintPath>D:\АРМ_2012-04-17\miller_lib\bin\Debug\Modbus.dll</HintPath>
     </Reference>
-    <Reference Include="PkbLib">
-      <HintPath>..\PkbLib\bin\Release\PkbLib.dll</HintPath>
+    <Reference Include="PkbLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\PkbLib\bin\Debug\PkbLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

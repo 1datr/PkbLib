@@ -61,11 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="bdTiaraDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>bdTiaraDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="CoordCalcer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -111,17 +106,6 @@
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="bdTiaraDataSet.xsc">
-      <DependentUpon>bdTiaraDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="bdTiaraDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>bdTiaraDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="bdTiaraDataSet.xss">
-      <DependentUpon>bdTiaraDataSet.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

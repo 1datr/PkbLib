@@ -124,7 +124,7 @@ namespace PkbLib
                     padding = dcs.Padding;
 
                     padding.Right = 0;
-                    if (f_grouping > 1)
+                    if ((f_grouping > 1) & (i<rowcount-1))
                     {
                         if (((i + 1) % f_grouping == 0) & (i > 0))
                         {
