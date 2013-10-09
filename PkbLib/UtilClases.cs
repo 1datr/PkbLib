@@ -68,6 +68,7 @@ namespace PkbLib
         public int cell_unload;
     }
 
+
     // Точка в 3-х мерном пространстве
     public struct Point3D
     {
@@ -160,5 +161,20 @@ namespace PkbLib
         //CoordZ
         public int Z_StopCell;
         public int Z_StopStacker;
+    }
+
+    public struct BitMapItem
+    {
+        public ushort addr;     // адрес слова
+        public ushort word;     // слово
+        public ushort bit;      // бит
+        public bool value;      // установлен ли бит
+        public string caption;  // что означает этот бит
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            BitMapItem obj_item = (BitMapItem)obj;
+            return ((obj_item.addr == this.addr) & (obj_item.word == this.word) & (obj_item.bit == this.bit) & (obj_item.value == this.value) & (obj_item.caption == this.caption));
+        }
     }
 }

@@ -717,7 +717,7 @@ namespace PkbLib
         private void send_cmd(int cmd_idx=0)
         {
             PkbStackerCmd cmd = this.CmdQueue.Peek();
-            if(cmd==null)
+            if(cmd!=null)
                 {
                     switch (cmd.cmd)
                     {

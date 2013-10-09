@@ -98,9 +98,9 @@ namespace PkbLib
             
         }
 
-        public virtual object stateinfo()
+        public virtual Dictionary<string, object> stateinfo()
         {
-            return "OK";
+            return null;
         }
 
         private void WatchTimer_Tick(object sender, EventArgs e)

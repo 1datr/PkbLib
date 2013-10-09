@@ -119,6 +119,58 @@ namespace PkbLib
             return ret;
         }
 
+        // информация о соединении и штабелере
+        public override Dictionary<string, object> stateinfo()
+        {
+            Dictionary<string, object> info = new Dictionary<string, object>();
+            info.Add("Alarm", con.GetAlarm());
+            info.Add("Deblock Alarm", con.GetAlarmDeblock());
+            info.Add("Tara", con.GetPresentTaraSh());
+            bool[][] Din = con.GetDIn();
+            info.Add("Din", Din);
+            bool[][] AlarmBits = con.HoldingRegs(drvCon.alarmAdr, drvCon.alarmAdr + drvCon.andAlarmAdr);
+
+
+
+            List<BitMapItem> bmitems = new List<BitMapItem>();
+
+            BitMapItem bmi = new BitMapItem();
+
+            if (AlarmBits != null)
+            {/*
+                for (ushort j = 0; j < captions.Length; j++)
+                {
+                    bmi.bit = bit;
+                    bmi.caption = captions[j];
+                    bmi.value = AlarmBits[z][bit];
+                    bmi.word = (ushort)(z + 1);
+                    bmitems.Add(bmi);
+                    bit++;
+                    bit %= 16;
+                    if (bit == 0) z++;
+                }*/
+                string[] BitGroupName = new string[] { "AlarmWithoutAcknowledgment", "AlarmWithAcknowledgment", "AlarmWithoutAcknowledgmentDeblock" };
+                int bgindex = 0;
+                for (int z = 0; z < 9; z++)
+                {
+                    if ((z > 0) & (z % 3 == 0)) bgindex++;
+                    for (int bit = 0; bit < 16; bit++)
+                    {
+                        bmi.bit = (ushort)bit;
+                        bmi.value = AlarmBits[z][bit];
+                        bmi.word = (ushort)(z + 1);
+                        string bitstr = BitGroupName[bgindex] + "[" + ((z % 3) + 1).ToString() + "]." + bit.ToString();
+                        AlarmBit abit = this.GetBit(bitstr);
+                        bmi.caption = abit.caption;
+                        bmitems.Add(bmi);
+                    }
+
+                }
+            }
+            info.Add("Alarm Bits", bmitems);
+            return info;
+        }
+
         // наблюдение о состоянии выполнения команд
         protected override void WatchCmd()
         {
