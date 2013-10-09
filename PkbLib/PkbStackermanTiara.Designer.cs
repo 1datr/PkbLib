@@ -41,7 +41,7 @@ namespace PkbLib
                 else
                 {
                     this.ErrorConnectSh = true;
-                    this.GenError(null,"Не удалось соединиться с ПЛК");
+                    this.GenError(null, "Не удалось соединиться с ПЛК");
                 }
         }
 

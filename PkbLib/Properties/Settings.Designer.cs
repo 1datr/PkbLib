@@ -22,5 +22,15 @@ namespace PkbLib.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ADMIN-ПК;Initial Catalog=bdTiara;Integrated Security=True")]
+        public string bdTiaraConnectionString {
+            get {
+                return ((string)(this["bdTiaraConnectionString"]));
+            }
+        }
     }
 }

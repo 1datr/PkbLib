@@ -118,8 +118,8 @@ namespace PkbLib
                     
                     clmn.FlatStyle = FlatStyle.Popup;
                     dcs = clmn.DefaultCellStyle;
-                    dcs.SelectionBackColor = Color.White;
-                    dcs.SelectionForeColor = Color.Black;
+                 /*   dcs.SelectionBackColor = Color.Red;
+                    dcs.SelectionForeColor = Color.Black;*/
                     clmn.DefaultCellStyle = dcs;
                     padding = dcs.Padding;
 
@@ -160,7 +160,7 @@ namespace PkbLib
         }
         // массив ячеек
         private Dictionary<int,PkbCell> CellBuff;
-        // установить координаты ячейки в массив и в штабелер
+        /*// установить координаты ячейки в массив и в штабелер
         private void SetCellCoords(int cell, Point3 coords)
         {
             if (CoordBuff == null) CoordBuff = new Dictionary<int, Point3>();
@@ -169,6 +169,15 @@ namespace PkbLib
 
             if(SM!=null)
                 SM.SetCellCoord(cell, coords);
+        }
+        */
+        // установить координаты ячейки в массив и в штабелер
+        private void SetCellCoords(int cell, RealCellCoord RCC )
+        {
+            
+
+            if (SM != null)
+                SM.SetCellCoord(cell, RCC);
         }
 
         private CoordCalcer f_calcer;
@@ -183,18 +192,173 @@ namespace PkbLib
                 f_calcer = value;
             }
         }
-
+        /*
         private void CalcCoords()
         {
-           
+            if (this.CellBuff == null) this.CellBuff = new Dictionary<int, PkbCell>();
             foreach(KeyValuePair<int, PkbCell> item in this.CellBuff)
             {                
                 SetCellCoords(item.Key, item.Value.CalcPoint(f_CellLength, f_CellWidth, f_CellHeight, f_sub));
             }
+        }*/
+        //Сохранение координат в БД
+        private BindingSource bs_Coords;
+        [DisplayName("Источник данных координат")]
+        public BindingSource BSCoordsContent
+        {
+            get
+            {
+                if (bs_Coords == null) bs_Coords = new BindingSource();
+                return bs_Coords;
+            }
+            set
+            {
+                bs_Coords = value;
+                /*
+                if (ds != null)
+                {
+                    if (this.bs_cell_Content != null)
+                        this.ds = ((DataSet)this.bs_cell_Content.DataSource);
+                    if (DA != null)
+                        DA.Fill(ds);
+                }*/
+
+                //this.load_all_cells();
+            }
+        }
+
+        // Рассчитать реальные координаты ячейки
+        public RealCellCoord CalcCellCoord(int ncell)
+        {
+            RealCellCoord RCC = new RealCellCoord();
+            PkbCell cell = CellBuff[ncell];
+            /*Point3D cell_indxes = */
+            if (this.Calcer != null) RCC = f_calcer.GetCellCoord(cell.Indexes);
+            return RCC;
+        }
+
+        public RealCellCoord GetCellRealCoords(int ncell)
+        {
+            if (bs_Coords == null) return CalcCellCoord(ncell);
+            bs_Coords.Filter = String.Format("ncell={0}", ncell);
+            bs_Coords.MoveFirst();
+            object theitem = bs_Coords.Current;
+            RealCellCoord coord = new RealCellCoord();
+            if (theitem == null)
+            {
+                coord = CalcCellCoord(ncell);
+                bs_Coords.Add(coord);
+            }
+            else
+            {
+                if (theitem.GetType() == typeof(DataRowView))
+                {
+                    DataRowView dr = ((DataRowView)bs_Coords.Current);
+                    //DataRowView dr = ((DataRowView)theitem);
+                    if (dr != null)
+                    {
+                        if (dr["Id"] != DBNull.Value)
+                            coord.id = Convert.ToInt32(dr["Id"]);
+                        if (dr["ncell"] != DBNull.Value)
+                            coord.ncell = Convert.ToInt32(dr["ncell"]);
+                        if (dr["X_CellBack"] != DBNull.Value)
+                            coord.X_CellBack = Convert.ToInt32(dr["X_CellBack"]);
+                        if (dr["X_CellForward"] != DBNull.Value)
+                            coord.X_CellForward = Convert.ToInt32(dr["X_CellForward"]);
+                        if (dr["X_StopBack"] != DBNull.Value)
+                            coord.X_StopBack = Convert.ToInt32(dr["X_StopBack"]);
+                        if (dr["X_StopForward"] != DBNull.Value)
+                            coord.X_StopForward = Convert.ToInt32(dr["X_StopForward"]);
+                        if (dr["YCheck_CellBusyDown"] != DBNull.Value)
+                            coord.YCheck_CellBusyDown = Convert.ToInt32(dr["YCheck_CellBusyDown"]);
+                        if (dr["YCheck_CellUp"] != DBNull.Value)
+                            coord.YCheck_CellUp = Convert.ToInt32(dr["YCheck_CellUp"]);
+                        if (dr["YCheck_CellDown"] != DBNull.Value)
+                            coord.YCheck_CellDown = Convert.ToInt32(dr["YCheck_CellDown"]);
+                        if (dr["YCheck_StopDown"] != DBNull.Value)
+                            coord.YCheck_StopDown = Convert.ToInt32(dr["YCheck_StopDown"]);
+                        if (dr["YCheck_StopUp"] != DBNull.Value)
+                            coord.YCheck_StopUp = Convert.ToInt32(dr["YCheck_StopUp"]);
+                        if (dr["YLoad_CellDown"] != DBNull.Value)
+                            coord.YLoad_CellDown = Convert.ToInt32(dr["YLoad_CellDown"]);
+                        if (dr["YLoad_CellUp"] != DBNull.Value)
+                            coord.YLoad_CellUp = Convert.ToInt32(dr["YLoad_CellUp"]);
+                        if (dr["YLoad_StopDown"] != DBNull.Value)
+                            coord.YLoad_StopDown = Convert.ToInt32(dr["YLoad_StopDown"]);
+                        if (dr["YLoad_StopUp"] != DBNull.Value)
+                            coord.YLoad_StopUp = Convert.ToInt32(dr["YLoad_StopUp"]);
+                        if (dr["YUpload_CellDown"] != DBNull.Value)
+                            coord.YUpload_CellDown = Convert.ToInt32(dr["YUpload_CellDown"]);
+                        if (dr["YUpload_CellUp"] != DBNull.Value)
+                            coord.YUpload_CellUp = Convert.ToInt32(dr["YUpload_CellUp"]);
+                        if (dr["YUpload_StopDown"] != DBNull.Value)
+                            coord.YUpload_StopDown = Convert.ToInt32(dr["YUpload_StopDown"]);
+                        if (dr["YUpload_StopUp"] != DBNull.Value)
+                            coord.YUpload_StopUp = Convert.ToInt32(dr["YUpload_StopUp"]);
+                        if (dr["Z_StopCell"] != DBNull.Value)
+                            coord.Z_StopCell = Convert.ToInt32(dr["Z_StopCell"]);
+                        if (dr["Z_StopStacker"] != DBNull.Value)
+                            coord.Z_StopStacker = Convert.ToInt32(dr["Z_StopStacker"]);
+                    }
+
+                }
+                else
+                {
+                    CurrencyManager cmgr = bs_Coords.CurrencyManager;
+                    DataRow dr = ((DataRowView)cmgr.Current).Row;
+                    //DataRowView dr = ((DataRowView)theitem);             
+
+                    if (dr["Id"] != DBNull.Value)
+                        coord.id = Convert.ToInt32(dr["Id"]);
+                    if (dr["ncell"] != DBNull.Value)
+                        coord.ncell = Convert.ToInt32(dr["ncell"]);
+                    if (dr["X_CellBack"] != DBNull.Value)
+                        coord.X_CellBack = Convert.ToInt32(dr["X_CellBack"]);
+                    if (dr["X_CellForward"] != DBNull.Value)
+                        coord.X_CellForward = Convert.ToInt32(dr["X_CellForward"]);
+                    if (dr["X_StopBack"] != DBNull.Value)
+                        coord.X_StopBack = Convert.ToInt32(dr["X_StopBack"]);
+                    if (dr["X_StopForward"] != DBNull.Value)
+                        coord.X_StopForward = Convert.ToInt32(dr["X_StopForward"]);
+                    if (dr["YCheck_CellBusyDown"] != DBNull.Value)
+                        coord.YCheck_CellBusyDown = Convert.ToInt32(dr["YCheck_CellBusyDown"]);
+                    if (dr["YCheck_CellUp"] != DBNull.Value)
+                        coord.YCheck_CellUp = Convert.ToInt32(dr["YCheck_CellUp"]);
+                    if (dr["YCheck_CellDown"] != DBNull.Value)
+                        coord.YCheck_CellDown = Convert.ToInt32(dr["YCheck_CellDown"]);
+                    if (dr["YCheck_StopDown"] != DBNull.Value)
+                        coord.YCheck_StopDown = Convert.ToInt32(dr["YCheck_StopDown"]);
+                    if (dr["YCheck_StopUp"] != DBNull.Value)
+                        coord.YCheck_StopUp = Convert.ToInt32(dr["YCheck_StopUp"]);
+                    if (dr["YLoad_CellDown"] != DBNull.Value)
+                        coord.YLoad_CellDown = Convert.ToInt32(dr["YLoad_CellDown"]);
+                    if (dr["YLoad_CellUp"] != DBNull.Value)
+                        coord.YLoad_CellUp = Convert.ToInt32(dr["YLoad_CellUp"]);
+                    if (dr["YLoad_StopDown"] != DBNull.Value)
+                        coord.YLoad_StopDown = Convert.ToInt32(dr["YLoad_StopDown"]);
+                    if (dr["YLoad_StopUp"] != DBNull.Value)
+                        coord.YLoad_StopUp = Convert.ToInt32(dr["YLoad_StopUp"]);
+                    if (dr["YUpload_CellDown"] != DBNull.Value)
+                        coord.YUpload_CellDown = Convert.ToInt32(dr["YUpload_CellDown"]);
+                    if (dr["YUpload_CellUp"] != DBNull.Value)
+                        coord.YUpload_CellUp = Convert.ToInt32(dr["YUpload_CellUp"]);
+                    if (dr["YUpload_StopDown"] != DBNull.Value)
+                        coord.YUpload_StopDown = Convert.ToInt32(dr["YUpload_StopDown"]);
+                    if (dr["YUpload_StopUp"] != DBNull.Value)
+                        coord.YUpload_StopUp = Convert.ToInt32(dr["YUpload_StopUp"]);
+                    if (dr["Z_StopCell"] != DBNull.Value)
+                        coord.Z_StopCell = Convert.ToInt32(dr["Z_StopCell"]);
+                    if (dr["Z_StopStacker"] != DBNull.Value)
+                        coord.Z_StopStacker = Convert.ToInt32(dr["Z_StopStacker"]);
+                }
+            }
+
+            return coord;
         }
         // раздаем ячейкам номера
         private void SetNumbers()
         {
+            if (CellBuff == null) CellBuff = new Dictionary<int, PkbCell>();
             int ncell = 1;
             for (int x = 0 ; x < dgvRackUp.Columns.Count; x++)
             {
@@ -247,7 +411,7 @@ namespace PkbLib
                 }
             }
 
-            CalcCoords();
+           
         }
 
         private void DGVResize()
@@ -413,10 +577,10 @@ namespace PkbLib
             // Пересчитываем Y c учетом перспективы     
            // int delta = CellBuff[1].GetPoint()
             int qmax;
-            if (f_position.Z < f_sub) 
+            if (f_position.Z < 4) 
                 {
                     qmax = 4;
-                    this.f_position.Y = Position.Y * (qmax / f_sub);
+                    this.f_position.Y = Position.Y * (qmax / 4);
                     
                 }
             else 
@@ -450,12 +614,12 @@ namespace PkbLib
             dgvRackUp.CellBorderStyle = DataGridViewCellBorderStyle.None;
         }
 
+        // Инициализировать контрол штабелера
         private void init_stacker()
         {
             CellBuff = new Dictionary<int,PkbCell>();
             CmdQueue = new Queue<PkbStackerCmd>();
             Position = new Point3(0, 0, 0);
-            CoordBuff = new Dictionary<int, Point3>();
 
             SetRowCount(dgvRackDown, rowcount);
             SetRowCount(dgvRackUp, rowcount);
@@ -467,25 +631,28 @@ namespace PkbLib
 
             SetNumbers();
             draw_stacker();
+
+            dgvRackDown.ClearSelection();
+            dgvRackUp.ClearSelection();
         }
-        private DataGridViewCell currcell = null;
+        private DataGridViewButtonCell currcell = null;
         private DataGridView curr_dgv = null;
         private void dgvRackUp_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (currcell != null)
                 currcell.Style.ForeColor = Color.Black;
-            currcell = dgvRackUp[e.ColumnIndex,e.RowIndex];
+            currcell = (DataGridViewButtonCell)dgvRackUp.CurrentCell;
             currcell.Style.ForeColor = Color.Red;
-            curr_dgv = dgvRackUp;
+            curr_dgv = dgvRackUp;           
         }
 
         private void dgvRackDown_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (currcell != null)
                 currcell.Style.ForeColor = Color.Black;
-            currcell = dgvRackDown[e.ColumnIndex, e.RowIndex];
+            currcell = (DataGridViewButtonCell)dgvRackDown.CurrentCell;
             currcell.Style.ForeColor = Color.Red;
-            curr_dgv = dgvRackDown;
+            curr_dgv = dgvRackDown;           
         }
 
         private void toolStripContainer1_TopToolStripPanel_Click(object sender, EventArgs e)
@@ -503,8 +670,12 @@ namespace PkbLib
                 if (SM != null)
                 {
                     SM.OnCoordChange += new OnStackermanCoordChange(this.stackerman1_OnCoordChange);
+                    // при завершении текущей команды
                     SM.OnCommandEnd += new OnStackermanCommandEnd(this.stackerman1_OnCommandEnd);
-                    SM.OnCommandError += new OnStackermanCommandError(this.stackerman1_OnCommandError);
+                    // при аларме
+                    SM.OnAlarm += new OnStackerAlarm(this.stackerman1_OnAlarm);
+                    // при программных ошибках
+                    SM.OnError += new OnStackermanError(this.stackerman1_OnError);
                 }
             }
             get { return SM; }
@@ -515,84 +686,58 @@ namespace PkbLib
         {
             Position = new Point3(Convert.ToInt32(Coords.X.Dist), Convert.ToInt32(Coords.Y.Dist), Convert.ToInt32(Coords.Z.Dist));
             if(f_grouping>1)
-                Position = new Point3((Position.X - OffsX) * (f_grouping*cellsize+4) / (CellLength*f_grouping),
-                (Position.Y - OffsY - f_sub) * (cellsize) / CellWidth,
-                (Position.Z - OffsZ) * (cellsize) / CellHeight);
+                Position = new Point3((Position.X - this.f_calcer.XOffs) * (f_grouping*cellsize+4) / (f_calcer.InnerCellXDist*f_grouping),
+                (Position.Y - this.f_calcer.YOffs - 4) * (cellsize) / f_calcer.DistCellY,
+                (Position.Z - this.f_calcer.ZOffs) * (cellsize) / f_calcer.ZCellSize);
             else
-            Position = new Point3((Position.X - OffsX) * (cellsize) / CellLength,
-                (Position.Y - OffsY - f_sub) * (cellsize) / CellWidth,
-                (Position.Z - OffsZ) * (cellsize) / CellHeight);
+                Position = new Point3((Position.X - this.f_calcer.YOffs) * (cellsize) / f_calcer.InnerCellXDist,
+                (Position.Y - this.f_calcer.YOffs - 4) * (cellsize) / f_calcer.DistCellY,
+                (Position.Z - this.f_calcer.ZOffs) * (cellsize) / f_calcer.ZCellSize);
             this.draw_stacker();
         }
 
+        // Завершено выполнение команды
         private void stackerman1_OnCommandEnd(int cmd, object[] _params)
         {
-
+            //this.CmdQueue.
+            send_cmd();
         }
 
-        private void stackerman1_OnCommandError(int cmd, object[] _params, string errstr)
+        private void stackerman1_OnAlarm(int cmd, object[] _params, string errstr)
+        { 
+        
+        }
+
+        private void stackerman1_OnError(string errstr)
         {
 
         }
 
         // отправить команду
-        private void send_cmd()
+        private void send_cmd(int cmd_idx=0)
         {
             PkbStackerCmd cmd = this.CmdQueue.Peek();
-            switch (cmd.cmd)
-            {
-                case "park": SM.Park(); break;
-                case "trans":
-                    // яч 1
-                    SM.SetCellCoord(cmd.param1, CoordBuff[cmd.param1]);
-                    // яч 2
-                    SM.SetCellCoord(cmd.param2, CoordBuff[cmd.param2]);
-                    // команда на перемещение
-                    SM.Transmit(cmd.param1, cmd.param2); 
-                    break;
-            }
+            if(cmd==null)
+                {
+                    switch (cmd.cmd)
+                    {
+                        case "park": SM.Park(); break;
+                        case "trans":
+                            // яч 1
+                            SM.SetCellCoord(cmd.param1, this.GetCellRealCoords(cmd.param1));
+                            // яч 2
+                            SM.SetCellCoord(cmd.param2, this.GetCellRealCoords(cmd.param2));
+                            // команда на перемещение
+                            SM.Transmit(cmd.param1, cmd.param2); 
+                            break;
+
+                        case "check":
+                            break;
+                    }
+                }
         }
 
-        private int f_CellLength = 30;
-        [Category("Параметры ячеек")]
-        [DisplayName("Длина ячейки")]
-        [Description("Длина ячейки в единицах, выдаваемых энкодером")]
-        // [PropertyOrder(30)]
-        public int CellLength { get { return f_CellLength; } set { f_CellLength = value; CalcCoords(); } }
-
-        private int f_CellWidth = 15;
-        [Category("Параметры ячеек")]
-        [DisplayName("Ширина ячейки")]
-        [Description("Ширина ячейки в единицах, выдаваемых энкодером")]
-        //  [PropertyOrder(31)]
-        public int CellWidth { get { return f_CellWidth; } set { f_CellWidth = value; CalcCoords(); } }
-
-        private int f_CellHeight = 20;
-        [Category("Параметры ячеек")]
-        [DisplayName("Высота ячейки")]
-        [Description("Высота ячейки в единицах, выдаваемых энкодером")]
-        public int CellHeight { get { return f_CellHeight; } set { f_CellHeight = value; CalcCoords(); } }
-
-        int f_sub = 4;
-        [Category("Параметры ячеек")]
-        [DisplayName("Подвал")]
-        [Description("Расстояние от пола до первого ряда")]
-        public int Sub { get { return f_sub; } set { f_sub = value; } }
-
-        [Category("Параметры ячеек")]
-        [DisplayName("Смещение по X")]
-        [Description("Что для штабелера 0, то для энкодера смещение по X")]
-        public int OffsX { get; set; }
-
-        [Category("Параметры ячеек")]
-        [DisplayName("Смещение по Y")]
-        [Description("Что для штабелера 0, то для энкодера смещение по Y")]
-        public int OffsY { get; set; }
-
-        [Category("Параметры ячеек")]
-        [DisplayName("Смещение по Z")]
-        [Description("Что для штабелера 0, то для энкодера смещение по Z")]
-        public int OffsZ { get; set; }
+      
 
         private Queue<PkbStackerCmd> CmdQueue;
         public void AddCommand(string cmdstr, int param1=0, int param2=0)
@@ -604,19 +749,46 @@ namespace PkbLib
 
         private bool f_stoped = false;
         public bool stoped { get { return f_stoped; } }
+        // Остановить штабелер
         public virtual void Stop()
         {
             SM.Stop();
             f_stoped = true;
         }
-
+        // Возобновить работу штабелера
         public virtual void Resume()
         {
             SM.Resume();
             f_stoped = false;
         }
 
-        private Dictionary<int, Point3> f_CoordBuff;
-        public Dictionary<int, Point3> CoordBuff { get { return f_CoordBuff; } set { f_CoordBuff = value; } }
+        /*private Dictionary<int, Point3> f_CoordBuff;
+        public Dictionary<int, Point3> CoordBuff { get { return f_CoordBuff; } set { f_CoordBuff = value; } }*/
+
+        private void dgvRackUp_SelectionChanged(object sender, EventArgs e)
+        {
+      /*      if (currcell != null)
+                currcell.Style.ForeColor = Color.Black;*/
+            currcell = (DataGridViewButtonCell)dgvRackUp.CurrentCell;
+          //  currcell.Style.ForeColor = Color.Red;
+            //currcell.Style.B = Color.Red;
+            if (curr_dgv != dgvRackUp) if(curr_dgv!=null) curr_dgv.ClearSelection();
+            curr_dgv = dgvRackUp; 
+        }
+
+        private void dgvRackDown_SelectionChanged(object sender, EventArgs e)
+        {
+          /*  if (currcell != null)
+                currcell.Style.ForeColor = Color.Black;*/
+            currcell = (DataGridViewButtonCell)dgvRackDown.CurrentCell;
+       //     currcell.Style.ForeColor = Color.Red;
+            if (curr_dgv != dgvRackDown) if (curr_dgv != null) curr_dgv.ClearSelection();
+            curr_dgv = dgvRackDown;
+        }
+
+        private void PkbStacker_Load(object sender, EventArgs e)
+        {
+            this.init_stacker();
+        }
     }
 }

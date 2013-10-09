@@ -18,12 +18,12 @@ namespace PkbLib
 
         private void button1_Click(object sender, EventArgs e)
         {
-            stackerman1.Active = true;
+         //   stackerman1.Active = true;
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            stackerman1.MustPoint = new PkbLib.Point3(Convert.ToInt32(tbX.Text), Convert.ToInt32(tbY.Text), Convert.ToInt32(tbZ.Text));
+         //   stackerman1.MustPoint = new PkbLib.Point3(Convert.ToInt32(tbX.Text), Convert.ToInt32(tbY.Text), Convert.ToInt32(tbZ.Text));
         }
 
         private void stackerman1_OnCommandEnd(int cmd, object[] _params)
@@ -55,6 +55,23 @@ namespace PkbLib
         private void stackerman1_OnCoordChange(StcCoords Coords, StcCoords OldCoords)
         {
             label1.Text = Coords.X.Dist + ":" + Coords.Y.Dist + ":" + Coords.Z.Dist;
+        }
+
+        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // TODO: данная строка кода позволяет загрузить данные в таблицу "bdTiaraDataSet.Coords". При необходимости она может быть перемещена или удалена.
+            this.coordsTableAdapter.Fill(this.bdTiaraDataSet.Coords);
+
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

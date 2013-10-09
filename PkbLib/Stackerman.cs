@@ -74,7 +74,9 @@ namespace PkbLib
     // команда выполнена
     public delegate void OnStackermanCommandEnd(int cmd, object[] _params);
     // команда завершилась с аварией
-    public delegate void OnStackermanCommandError(int cmd, object[] _params, string errstr);
+    public delegate void OnStackerAlarm(int cmd, object[] _params, string errstr);
+    // ошибка. Исключительная ситуация
+    public delegate void OnStackermanError(string errstr);
     // при изменении координат штабелера
     public delegate void OnStackermanCoordChange(StcCoords Coords, StcCoords OldCoords);
     // при изменении состояния готовности
@@ -114,7 +116,7 @@ namespace PkbLib
         private int param1;
         private int param2;
 
-        private void WatchCmd()
+        protected virtual void WatchCmd()
         {
             switch (command)
             {
@@ -193,9 +195,19 @@ namespace PkbLib
         [Description("Событие, возникающее при завершении выполнения команды штабелера")]
         public event OnStackermanCommandEnd OnCommandEnd;
 
+        [DisplayName("При программном исключении")]
+        [Description("Событие, возникающее при программном исключении (не аварии штабелера)")]
+        public event OnStackermanError OnError;
+
         [DisplayName("При ошибке выполнения команды штабелера")]
         [Description("Событие, возникающее при ошибке выполнения команды штабелера")]
-        public event OnStackermanCommandError OnCommandError;
+        public event OnStackerAlarm OnAlarm;
+
+        protected void ExeOnEndCmd(int cmd, object[] _params)
+        {
+            if (OnCommandEnd != null)
+                OnCommandEnd(cmd, _params);
+        }       
 
         private StcCoords Coords;
         private StcCoords OldCoords;
@@ -223,7 +235,7 @@ namespace PkbLib
             }
         }
 
-        public void Park()
+        public virtual void Park()
         {
             command = "park";
             MustPoint = new Point3(0, 0, 0);
@@ -238,9 +250,10 @@ namespace PkbLib
             }
         }
         private int cmd;
-        public void GenError(object obj, string str)
+        public void GenError(object obj, string str="")
         {
-            if (this.OnCommandError != null) this.OnCommandError(cmd, null, str);
+            if (str == "") str = obj.ToString();
+            if (this.OnError != null) this.OnError(str);
         }
 
         private bool active = true;
@@ -267,6 +280,7 @@ namespace PkbLib
         }
         // буфер координат
         private Dictionary<int,Point3> CoordsBuf;
+        // Установить координаты ячейки
         public virtual void SetCellCoord(int numcell, Point3 coords)
         {
             if (CoordsBuf == null)
@@ -277,6 +291,21 @@ namespace PkbLib
                 CoordsBuf.Add(numcell, coords);
 
         }
-        
+
+        public virtual void SetCellCoord(int numcell, RealCellCoord RCC)
+        {
+            
+        }
+
+        public virtual void CellCheck(int numcell)
+        { 
+            
+        }
+
+        // Переместить
+        public virtual void Trans(int numcell1, int numcell2)
+        {
+            
+        }
     }
 }

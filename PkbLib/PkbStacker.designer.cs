@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvRackUp = new System.Windows.Forms.DataGridView();
             this.dgvRackDown = new System.Windows.Forms.DataGridView();
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
@@ -50,6 +52,14 @@
             this.dgvRackUp.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvRackUp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvRackUp.ColumnHeadersVisible = false;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRackUp.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvRackUp.Dock = System.Windows.Forms.DockStyle.Top;
             this.dgvRackUp.Location = new System.Drawing.Point(0, 0);
             this.dgvRackUp.Name = "dgvRackUp";
@@ -58,7 +68,7 @@
             this.dgvRackUp.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvRackUp.Size = new System.Drawing.Size(467, 65);
             this.dgvRackUp.TabIndex = 0;
-            this.dgvRackUp.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRackUp_CellClick);
+            this.dgvRackUp.SelectionChanged += new System.EventHandler(this.dgvRackUp_SelectionChanged);
             // 
             // dgvRackDown
             // 
@@ -70,6 +80,14 @@
             this.dgvRackDown.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvRackDown.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvRackDown.ColumnHeadersVisible = false;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRackDown.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvRackDown.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dgvRackDown.Location = new System.Drawing.Point(0, 108);
             this.dgvRackDown.Name = "dgvRackDown";
@@ -78,7 +96,7 @@
             this.dgvRackDown.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvRackDown.Size = new System.Drawing.Size(467, 54);
             this.dgvRackDown.TabIndex = 2;
-            this.dgvRackDown.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRackDown_CellClick);
+            this.dgvRackDown.SelectionChanged += new System.EventHandler(this.dgvRackDown_SelectionChanged);
             // 
             // shapeContainer1
             // 
@@ -127,11 +145,12 @@
             this.Controls.Add(this.shapeContainer1);
             this.Name = "PkbStacker";
             this.Size = new System.Drawing.Size(467, 162);
+            this.Load += new System.EventHandler(this.PkbStacker_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRackUp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRackDown)).EndInit();
             this.rectCaret.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.init_stacker();
+
         }
 
         #endregion

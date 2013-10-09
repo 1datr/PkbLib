@@ -102,7 +102,7 @@ namespace PkbLib
         }
 
         // выдать реальные координаты ячейки
-        public RealCellCoord GetCellCoord(Point3D CellIdx)
+        public RealCellCoord GetCellCoord(Point3 CellIdx)
         {
             RealCellCoord RCC = new RealCellCoord();
             if ((CellIdx.X < f_grouping)||(f_grouping == 0))
